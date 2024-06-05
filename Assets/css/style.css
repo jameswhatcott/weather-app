@@ -5,7 +5,7 @@ body {
 header {
     background-color: #007bff; /* Blue color */
     color: white; /* White text */
-    padding: 23px 0; /* Padding top and bottom */
+    padding: 20px 0; /* Padding top and bottom */
     text-align: center; /* Center align text */
 }
 
@@ -97,4 +97,33 @@ header h1 {
 
 img {
     width: 55px;
+}
+
+.cityButton {
+    background-color: #1E3A8A; /* Dark blue color */
+    color: white; /* White font color */
+    padding: 15px 30px; /* Padding to make the button long */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Optional: add rounded corners */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Font weight */
+    text-transform: uppercase; /* Uppercase text */
+    cursor: pointer; /* Pointer cursor on hover */
+    width: 100%; /* Make the button full-width */
+    max-width: 300px; /* Limit the maximum width */
+    display: block; /* Block display for margin auto to work */
+    margin: 20px auto; /* Center the button horizontally */ 
+}
+
+.cityButton:hover {
+    background-color: #1C1C87; /* Slightly darker blue on hover */
+}
+
+.cityButton:active {
+    background-color: #162B63; /* Even darker blue when clicked */
+}
+
+.cityButton:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.5); /* Custom focus outline */
 }

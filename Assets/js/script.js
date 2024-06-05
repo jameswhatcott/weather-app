@@ -18,6 +18,7 @@ function addCityToHistory(city) {
     
     // Create a new button for the searched city
     const cityButton = document.createElement('button');
+    cityButton.classList.add('cityButton');
     cityButton.textContent = city;
     cityButton.addEventListener('click', function() {
         getGeocodeData(city);
@@ -174,6 +175,7 @@ function displayWeatherData(data) {
 
         const windSpeedParagraph = document.createElement('p');
         windSpeedParagraph.innerHTML = `<strong>Wind Speed:</strong> ${dayForecasts[0].wind.speed}mph`;
+        dayDiv.appendChild(windSpeedParagraph);
 
         forecastContainer.appendChild(dayDiv);
     });
