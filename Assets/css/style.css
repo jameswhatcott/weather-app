@@ -16,7 +16,6 @@ header h1 {
 /* Updated CSS styles for the main container */
 .container {
     margin: 0 auto;
-    padding: 20px 20px;
     display: flex;
     flex-direction: column;
     grid-column: 1 / 2; /* Left side of the grid */
@@ -43,6 +42,8 @@ header h1 {
 #weatherResult {
     margin-top: 20px; /* Add margin to separate form and results */
     padding-top: 10px; /* Add padding for spacing */
+    margin: 0 auto;
+    padding-right: 120px;
     grid-column: 2 / 4; /* Middle and right side of the grid */
 
 }
@@ -91,6 +92,6 @@ header h1 {
 .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Three equal columns */
-    gap: 20px; /* Gap between grid items */
+    gap: 10px; /* Gap between grid items */
 }
 
