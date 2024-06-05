@@ -1,27 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weather App</title>
     <link rel="stylesheet" href="./Assets/css/style.css"/>
 </head>
 <body>
-    <h1>Weather Dashboard</h1>
-    <div id="city-search">
-        <h2>Search for a city:</h2>
+    <!-- Blue banner header -->
+    <header>
+        <h1>Weather App</h1>
+    </header>
+
+    <div class="container">
+        <!-- Form -->
         <form id="myForm">
-        <input id="city" type="text"/>
-        <br>
-        <input id="button" type="submit" value="Search"/>
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city">
+            <button type="submit">Get Weather</button>
         </form>
-    </div>
-    <div id="searchHistory">
 
+        <!-- Weather results container -->
+        <div id="searchHistory"></div>
     </div>
-    <div id="weatherResult">
 
-    </div>
+    <!-- Rest of your content -->
+    <div id="weatherResult"></div>
+    
+
+
     <script src="./Assets/js/script.js"></script>
 </body>
 </html>

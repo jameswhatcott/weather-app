@@ -111,13 +111,39 @@ function displayWeatherData(data) {
     });
 
     const dates = Object.keys(dailyForecast).slice(0, 6);
-    dates.forEach((dateString, index) => {
+
+    // Display today's weather
+    const todayDiv = document.createElement('div');
+    todayDiv.id = 'todayWeather';
+    const todayHeader = document.createElement('h3');
+    todayHeader.textContent = "Today's Weather";
+    todayDiv.appendChild(todayHeader);
+
+    const todayForecast = dailyForecast[dates[0]][0];
+    const todayDateParagraph = document.createElement('p');
+    todayDateParagraph.innerHTML = `<strong>Date:</strong> ${dates[0]}`;
+    todayDiv.appendChild(todayDateParagraph);
+
+    const todayTempParagraph = document.createElement('p');
+    todayTempParagraph.innerHTML = `<strong>Temperature:</strong> ${todayForecast.main.temp}°C`;
+    todayDiv.appendChild(todayTempParagraph);
+
+    const todayDescriptionParagraph = document.createElement('p');
+    todayDescriptionParagraph.innerHTML = `<strong>Description:</strong> ${todayForecast.weather[0].description}`;
+    todayDiv.appendChild(todayDescriptionParagraph);
+
+    weatherResult.appendChild(todayDiv);
+
+    // Display the next 5 days' weather
+    const forecastContainer = document.createElement('div');
+    forecastContainer.classList.add('forecast-container');
+    dates.slice(1).forEach((dateString, index) => {
         const dayForecasts = dailyForecast[dateString];
         const dayDiv = document.createElement('div');
         dayDiv.classList.add('weather-day');
 
         const dayHeader = document.createElement('h3');
-        dayHeader.textContent = index === 0 ? "Today's Weather" : `Day ${index}`;
+        dayHeader.textContent = `Day ${index + 1}`;
         dayDiv.appendChild(dayHeader);
 
         const dateParagraph = document.createElement('p');
@@ -132,6 +158,8 @@ function displayWeatherData(data) {
         descriptionParagraph.innerHTML = `<strong>Description:</strong> ${dayForecasts[0].weather[0].description}`;
         dayDiv.appendChild(descriptionParagraph);
 
-        weatherResult.appendChild(dayDiv);
+        forecastContainer.appendChild(dayDiv);
     });
+
+    weatherResult.appendChild(forecastContainer);
 }
