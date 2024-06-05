@@ -56,7 +56,7 @@ function getGeocodeData(city) {
 function getWeatherData(lat, lon) {
     const apiKey = '658c0441ad4e1c5ad68aea928a6f1e08';
     const baseURL = 'https://api.openweathermap.org/data/2.5/forecast';
-    const url = `${baseURL}?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+    const url = `${baseURL}?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
     
     fetch(url)
         .then(response => {
@@ -124,13 +124,22 @@ function displayWeatherData(data) {
     todayDateParagraph.innerHTML = `<strong>Date:</strong> ${dates[0]}`;
     todayDiv.appendChild(todayDateParagraph);
 
+    const todayIcon = document.createElement('img');
+    const todayIconUrl = `http://openweathermap.org/img/wn/${todayForecast.weather[0].icon}@2x.png`;
+    todayIcon.src = `${todayIconUrl}`;
+    todayDiv.appendChild(todayIcon);
+
     const todayTempParagraph = document.createElement('p');
-    todayTempParagraph.innerHTML = `<strong>Temperature:</strong> ${todayForecast.main.temp}°C`;
+    todayTempParagraph.innerHTML = `<strong>Temperature:</strong> ${todayForecast.main.temp}°F`;
     todayDiv.appendChild(todayTempParagraph);
 
-    const todayDescriptionParagraph = document.createElement('p');
-    todayDescriptionParagraph.innerHTML = `<strong>Description:</strong> ${todayForecast.weather[0].description}`;
-    todayDiv.appendChild(todayDescriptionParagraph);
+    const todayHumidityParagraph = document.createElement('p');
+    todayHumidityParagraph.innerHTML = `<strong>Humidity:</strong> ${todayForecast.main.humidity}%`;
+    todayDiv.appendChild(todayHumidityParagraph);
+
+    const todayWindSpeed = document.createElement('p');
+    todayWindSpeed.innerHTML = `<strong>Wind Speed:</strong> ${todayForecast.wind.speed}mph`;
+    todayDiv.appendChild(todayWindSpeed);
 
     weatherResult.appendChild(todayDiv);
 
@@ -150,13 +159,21 @@ function displayWeatherData(data) {
         dateParagraph.innerHTML = `<strong>Date:</strong> ${dateString}`;
         dayDiv.appendChild(dateParagraph);
 
+        const icon = document.createElement('img');
+        const iconUrl = `http://openweathermap.org/img/wn/${dayForecasts[0].weather[0].icon}@2x.png`;
+        icon.src = `${iconUrl}`;
+        dayDiv.appendChild(icon);
+
         const tempParagraph = document.createElement('p');
-        tempParagraph.innerHTML = `<strong>Temperature:</strong> ${dayForecasts[0].main.temp}°C`;
+        tempParagraph.innerHTML = `<strong>Temperature:</strong> ${dayForecasts[0].main.temp}°F`;
         dayDiv.appendChild(tempParagraph);
 
-        const descriptionParagraph = document.createElement('p');
-        descriptionParagraph.innerHTML = `<strong>Description:</strong> ${dayForecasts[0].weather[0].description}`;
-        dayDiv.appendChild(descriptionParagraph);
+        const humidityParagraph = document.createElement('p');
+        humidityParagraph.innerHTML = `<strong>Humidity:</strong> ${dayForecasts[0].main.humidity}%`;
+        dayDiv.appendChild(humidityParagraph);
+
+        const windSpeedParagraph = document.createElement('p');
+        windSpeedParagraph.innerHTML = `<strong>Wind Speed:</strong> ${dayForecasts[0].wind.speed}mph`;
 
         forecastContainer.appendChild(dayDiv);
     });

@@ -5,7 +5,7 @@ body {
 header {
     background-color: #007bff; /* Blue color */
     color: white; /* White text */
-    padding: 10px 0; /* Padding top and bottom */
+    padding: 23px 0; /* Padding top and bottom */
     text-align: center; /* Center align text */
 }
 
@@ -95,3 +95,6 @@ header h1 {
     gap: 10px; /* Gap between grid items */
 }
 
+img {
+    width: 55px;
+}
