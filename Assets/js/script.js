@@ -1,25 +1,19 @@
 document.getElementById('myForm').addEventListener('submit', function(event) {
+    // Prevent the default form submission behavior
     event.preventDefault();
-    const cityInput = document.getElementById('search');
+
+    // Get the input element
+    const cityInput = document.getElementById('city');
+    
+    // Get the value of the input element
     const city = cityInput.value;
     
+    // Log the value to the console (or do something else with it)
     console.log(`City: ${city}`);
     
+    // Calling the getGeocodeData function with the input value
     getGeocodeData(city);
 });
-
-
-// Function to convert Unix timestamp to a readable date format
-function formatDate(timestamp) {
-    const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
-    return date.toLocaleDateString(); // Format the date as a readable string
-}
-
-// Example usage
-const timestamp = 1625858400;
-const readableDate = formatDate(timestamp);
-console.log(readableDate); // Output: "07/10/2021" (the format depends on your locale settings)
-
 
 function getGeocodeData(city) {
     const apiKey = '658c0441ad4e1c5ad68aea928a6f1e08';
@@ -38,6 +32,7 @@ function getGeocodeData(city) {
                 const { lat, lon, name, country } = data[0];
                 console.log(`City: ${name}, Country: ${country}, Latitude: ${lat}, Longitude: ${lon}`);
                 
+                // Fetch weather data using the obtained latitude and longitude
                 getWeatherData(lat, lon);
             } else {
                 console.log('No results found');
@@ -51,7 +46,7 @@ function getGeocodeData(city) {
 function getWeatherData(lat, lon) {
     const apiKey = '658c0441ad4e1c5ad68aea928a6f1e08';
     const baseURL = 'https://api.openweathermap.org/data/2.5/forecast';
-    const url = `${baseURL}?lat=${lat}&lon=${lon}&exclude=hourly,minutely&units=imperial&appid=${apiKey}`;
+    const url = `${baseURL}?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
     
     fetch(url)
         .then(response => {
@@ -62,54 +57,64 @@ function getWeatherData(lat, lon) {
         })
         .then(data => {
             console.log('Weather data:', data);
-            displayWeatherData(data);
+            if (data.list && data.city) {
+                displayWeatherData(data);
+            } else {
+                console.error('Error: Weather data is incomplete.');
+                const weatherResult = document.getElementById('weatherResult');
+                weatherResult.innerHTML = 'Weather data is not available. Please try again later.';
+            }
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
+            const weatherResult = document.getElementById('weatherResult');
+            weatherResult.innerHTML = 'Error fetching weather data. Please try again later.';
         });
 }
 
 function displayWeatherData(data) {
-    const weatherResult = document.getElementById('dailyWeather');
+    const weatherResult = document.getElementById('weatherResult');
     weatherResult.innerHTML = '';
 
+    // Log the data to inspect its structure
+    console.log('Data to be displayed:', data);
+
+    // Function to convert Unix timestamp to a readable date format
     function formatDate(timestamp) {
-        const date = new Date(timestamp * 1000); 
-        return date.toLocaleDateString(); 
+        const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
+        return date.toLocaleDateString(); // Format the date as a readable string
     }
 
-    const today = data.current;
-    if (today && today.dt) {
-        const todayWeather = document.createElement('div');
-        todayWeather.innerHTML = `<h2>Today's Weather</h2>
-                                  <p><strong>Date:</strong> ${formatDate(today.dt)}</p>
-                                  <p><strong>Temperature:</strong> ${today.temp}°F</p>
-                                  <p><strong>Description:</strong> ${today.weather[0].description}</p>`;
-        weatherResult.appendChild(todayWeather);
-    } else {
-        console.error('Error: Today\'s weather data is unavailable.');
-    }
+    // Display today's weather and next 5 days' weather forecast
+    const forecastList = data.list;
+    const city = data.city.name;
 
-    // Display the next 5 days weather forecast
-    const dailyForecast = data.daily;
-    if (dailyForecast && dailyForecast.length > 0) {
-        const nextFiveDays = dailyForecast.slice(1, 6);
-        nextFiveDays.forEach((day, index) => {
-            if (day && day.dt) {
-                const temperature = day.temp.day;
-                const description = day.weather[0].description;
+    // Create a header for the city
+    const cityHeader = document.createElement('h2');
+    cityHeader.textContent = `Weather forecast for ${city}`;
+    weatherResult.appendChild(cityHeader);
 
-                const weatherInfo = document.createElement('div');
-                weatherInfo.innerHTML = `<h3>Day ${index + 1}</h3>
-                                         <p><strong>Date:</strong> ${formatDate(day.dt)}</p>
-                                         <p><strong>Temperature:</strong> ${temperature}°F</p>
-                                         <p><strong>Description:</strong> ${description}</p>`;
-                weatherResult.appendChild(weatherInfo);
-            } else {
-                console.error(`Error: Forecast data for day ${index + 1} is unavailable.`);
-            }
-        });
-    } else {
-        console.error('Error: Daily forecast data is unavailable.');
-    }
+    // Group the forecast data by day
+    const dailyForecast = {};
+    forecastList.forEach(forecast => {
+        const date = new Date(forecast.dt * 1000);
+        const dateString = date.toLocaleDateString();
+        if (!dailyForecast[dateString]) {
+            dailyForecast[dateString] = [];
+        }
+        dailyForecast[dateString].push(forecast);
+    });
+
+    // Display today's weather and the next 5 days
+    const dates = Object.keys(dailyForecast).slice(0, 6); // Get the first 6 days including today
+    dates.forEach((dateString, index) => {
+        const dayForecasts = dailyForecast[dateString];
+        const dayDiv = document.createElement('div');
+        dayDiv.innerHTML = `<h3>${index === 0 ? "Today's Weather" : `Day ${index}`}</h3>
+                            <p><strong>Date:</strong> ${dateString}</p>
+                            <p><strong>Temperature:</strong> ${dayForecasts[0].main.temp}°F</p>
+                            <p><strong>Description:</strong> ${dayForecasts[0].weather[0].description}</p>`;
+        weatherResult.appendChild(dayDiv);
+    });
 }
+
