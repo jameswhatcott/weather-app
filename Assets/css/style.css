@@ -15,13 +15,12 @@ header h1 {
 
 /* Updated CSS styles for the main container */
 .container {
-    max-width: 600px;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 20px 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    float: left;
+    grid-column: 1 / 2; /* Left side of the grid */
+
 }
 
 /* Updated CSS styles for the form */
@@ -44,6 +43,8 @@ header h1 {
 #weatherResult {
     margin-top: 20px; /* Add margin to separate form and results */
     padding-top: 10px; /* Add padding for spacing */
+    grid-column: 2 / 4; /* Middle and right side of the grid */
+
 }
 
 /* Existing CSS styles for weather results and search history */
@@ -86,3 +87,10 @@ header h1 {
     margin-bottom: 20px;
     display: block;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+    gap: 20px; /* Gap between grid items */
+}
+
