@@ -1,19 +1,31 @@
 document.getElementById('myForm').addEventListener('submit', function(event) {
-    // Prevent the default form submission behavior
     event.preventDefault();
-
-    // Get the input element
     const cityInput = document.getElementById('city');
-    
-    // Get the value of the input element
     const city = cityInput.value;
-    
-    // Log the value to the console (or do something else with it)
     console.log(`City: ${city}`);
-    
-    // Calling the getGeocodeData function with the input value
+    addCityToHistory(city);
     getGeocodeData(city);
 });
+
+function addCityToHistory(city) {
+    const searchHistory = document.getElementById('searchHistory');
+    const buttons = searchHistory.getElementsByTagName('button');
+    
+    // If there are already 8 buttons, remove the oldest one
+    if (buttons.length >= 8) {
+        searchHistory.removeChild(buttons[0]);
+    }
+    
+    // Create a new button for the searched city
+    const cityButton = document.createElement('button');
+    cityButton.textContent = city;
+    cityButton.addEventListener('click', function() {
+        getGeocodeData(city);
+    });
+    
+    // Append the new button to the search history div
+    searchHistory.appendChild(cityButton);
+}
 
 function getGeocodeData(city) {
     const apiKey = '658c0441ad4e1c5ad68aea928a6f1e08';
@@ -31,8 +43,6 @@ function getGeocodeData(city) {
             if (data.length > 0) {
                 const { lat, lon, name, country } = data[0];
                 console.log(`City: ${name}, Country: ${country}, Latitude: ${lat}, Longitude: ${lon}`);
-                
-                // Fetch weather data using the obtained latitude and longitude
                 getWeatherData(lat, lon);
             } else {
                 console.log('No results found');
@@ -46,7 +56,7 @@ function getGeocodeData(city) {
 function getWeatherData(lat, lon) {
     const apiKey = '658c0441ad4e1c5ad68aea928a6f1e08';
     const baseURL = 'https://api.openweathermap.org/data/2.5/forecast';
-    const url = `${baseURL}?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+    const url = `${baseURL}?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
     
     fetch(url)
         .then(response => {
@@ -76,25 +86,20 @@ function displayWeatherData(data) {
     const weatherResult = document.getElementById('weatherResult');
     weatherResult.innerHTML = '';
 
-    // Log the data to inspect its structure
     console.log('Data to be displayed:', data);
 
-    // Function to convert Unix timestamp to a readable date format
     function formatDate(timestamp) {
-        const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
-        return date.toLocaleDateString(); // Format the date as a readable string
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleDateString();
     }
 
-    // Display today's weather and next 5 days' weather forecast
     const forecastList = data.list;
     const city = data.city.name;
 
-    // Create a header for the city
     const cityHeader = document.createElement('h2');
     cityHeader.textContent = `Weather forecast for ${city}`;
     weatherResult.appendChild(cityHeader);
 
-    // Group the forecast data by day
     const dailyForecast = {};
     forecastList.forEach(forecast => {
         const date = new Date(forecast.dt * 1000);
@@ -105,16 +110,28 @@ function displayWeatherData(data) {
         dailyForecast[dateString].push(forecast);
     });
 
-    // Display today's weather and the next 5 days
-    const dates = Object.keys(dailyForecast).slice(0, 6); // Get the first 6 days including today
+    const dates = Object.keys(dailyForecast).slice(0, 6);
     dates.forEach((dateString, index) => {
         const dayForecasts = dailyForecast[dateString];
         const dayDiv = document.createElement('div');
-        dayDiv.innerHTML = `<h3>${index === 0 ? "Today's Weather" : `Day ${index}`}</h3>
-                            <p><strong>Date:</strong> ${dateString}</p>
-                            <p><strong>Temperature:</strong> ${dayForecasts[0].main.temp}°F</p>
-                            <p><strong>Description:</strong> ${dayForecasts[0].weather[0].description}</p>`;
+        dayDiv.classList.add('weather-day');
+
+        const dayHeader = document.createElement('h3');
+        dayHeader.textContent = index === 0 ? "Today's Weather" : `Day ${index}`;
+        dayDiv.appendChild(dayHeader);
+
+        const dateParagraph = document.createElement('p');
+        dateParagraph.innerHTML = `<strong>Date:</strong> ${dateString}`;
+        dayDiv.appendChild(dateParagraph);
+
+        const tempParagraph = document.createElement('p');
+        tempParagraph.innerHTML = `<strong>Temperature:</strong> ${dayForecasts[0].main.temp}°C`;
+        dayDiv.appendChild(tempParagraph);
+
+        const descriptionParagraph = document.createElement('p');
+        descriptionParagraph.innerHTML = `<strong>Description:</strong> ${dayForecasts[0].weather[0].description}`;
+        dayDiv.appendChild(descriptionParagraph);
+
         weatherResult.appendChild(dayDiv);
     });
 }
-
