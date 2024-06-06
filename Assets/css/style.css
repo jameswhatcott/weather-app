@@ -99,7 +99,7 @@ img {
     width: 55px;
 }
 
-.cityButton {
+.history-button {
     background-color: #1E3A8A; /* Dark blue color */
     color: white; /* White font color */
     padding: 15px 30px; /* Padding to make the button long */
@@ -115,15 +115,19 @@ img {
     margin: 20px auto; /* Center the button horizontally */ 
 }
 
-.cityButton:hover {
+.history-button:hover {
     background-color: #1C1C87; /* Slightly darker blue on hover */
 }
 
-.cityButton:active {
+.history-button:active {
     background-color: #162B63; /* Even darker blue when clicked */
 }
 
-.cityButton:focus {
+.history-button:focus {
     outline: none; /* Remove default focus outline */
     box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.5); /* Custom focus outline */
+}
+
+#today-weather {
+    align-items: center;
 }
