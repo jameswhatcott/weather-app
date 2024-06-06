@@ -85,9 +85,12 @@ header h1 {
 }
 
 #todayWeather {
-    margin-bottom: 20px;
-    display: block;
+    margin: 20px auto; /* Center the section horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content vertically */
 }
+
 
 .grid-container {
     display: grid;
@@ -126,8 +129,4 @@ img {
 .history-button:focus {
     outline: none; /* Remove default focus outline */
     box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.5); /* Custom focus outline */
-}
-
-#todayWeather {
-    align-items: center;
 }

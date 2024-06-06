@@ -48,10 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
             <div id="todayWeather" class="weather-day">
                 <h3>Today's Weather</h3>
                 <img src="${iconUrl}" alt="${today.weather[0].description}">
-                <p>Temperature: ${today.main.temp}°F</p>
-                <p>Weather: ${today.weather[0].description}</p>
-                <p>Humidity: ${today.main.humidity}%</p>
-                <p>Wind: ${today.wind.speed} m/s</p>
+                <p><strong>Temperature:</strong> ${today.main.temp}°F</p>
+                <p><strong>Weather:</strong> ${today.weather[0].description}</p>
+                <p><strong>Humidity:</strong> ${today.main.humidity}%</p>
+                <p><strong>Wind:</strong> ${today.wind.speed} m/s</p>
             </div>
         `;
 
@@ -63,10 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="weather-day">
                     <h3>${date}</h3>
                     <img src="${iconUrl}" alt="${day.weather[0].description}">
-                    <p>Temperature: ${day.main.temp}°F</p>
-                    <p>Weather: ${day.weather[0].description}</p>
-                    <p>Humidity: ${day.main.humidity}%</p>
-                    <p>Wind: ${day.wind.speed} m/s</p>
+                    <p><strong>Temperature:</strong> ${day.main.temp}°F</p>
+                    <p><strong>Weather:</strong> ${day.weather[0].description}</p>
+                    <p><strong>Humidity:</strong> ${day.main.humidity}%</p>
+                    <p><strong>Wind:</strong> ${day.wind.speed} m/s</p>
                 </div>
             `;
         }).join('');
