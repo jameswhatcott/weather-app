@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("myForm");
-    const cityInput = document.getElementById("city");
+    const cityInput = document.getElementById("cityInput");
     const weatherResult = document.getElementById("weatherResult");
-    const searchHistory = document.getElementById("searchHistory");
-
+    const searchHistoryDiv = document.getElementById("searchHistory");
     const apiKey = "658c0441ad4e1c5ad68aea928a6f1e08"; // Replace with your OpenWeather API key
     let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
@@ -87,11 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const day = date.getUTCDate();
             const hour = date.getUTCHours();
 
-            if (!seenDates.has(day) && hour === 12) {
+            if (!seenDates.has(day) && hour === 12) { // Select forecast for 12 PM each day
                 dailyData.push(item);
                 seenDates.add(day);
 
-                if (dailyData.length === 5) {
+                if (dailyData.length === 5) { // Limit to 5 days of forecast
                     break;
                 }
             }
@@ -112,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateHistoryButtons() {
-        searchHistory.innerHTML = '';
+        searchHistoryDiv.innerHTML = '';
         history.forEach(city => {
             const button = document.createElement("button");
             button.textContent = city;
@@ -121,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 fetchWeatherData(city);
                 localStorage.setItem("lastCity", city);
             });
-            searchHistory.appendChild(button);
+            searchHistoryDiv.appendChild(button);
         });
     }
 });
