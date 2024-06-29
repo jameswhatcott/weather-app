@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => response.json())
             .then(data => {
                 if (data.cod === "200") {
+                    console.log(data);
                     displayWeatherData(data);
                     addToHistory(city);
                 } else {
